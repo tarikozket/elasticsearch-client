@@ -106,6 +106,7 @@ module ElasticSearch
     #
     # Returns a hash, the parsed response body from elasticsearch
     def query(types, query, options=nil)
+      puts "Query #{types}"
       query = {'q' => query} if query.is_a?(String)
       get do |req|
         req.url "#{@name}/#{types}/_search", query
