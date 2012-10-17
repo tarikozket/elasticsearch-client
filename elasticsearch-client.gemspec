@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'faraday', '~> 0.8'
   s.add_dependency 'faraday_middleware', '~> 0.8.7'
-  s.add_dependency 'excon', '~> 0.6.6'
+  s.add_dependency 'excon'
   s.add_dependency 'yajl-ruby', '~> 1.1.0'
 
   s.add_development_dependency 'rake'

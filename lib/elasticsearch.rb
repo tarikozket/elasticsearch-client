@@ -91,7 +91,6 @@ module ElasticSearch
     #
     # Returns a hash, the parsed response body from elasticsearch
     def search(types, options)
-      puts "Searching #{types}"
       get do |req|
         req.url "#{@name}/#{types}/_search"
         req.body = options
