@@ -234,7 +234,7 @@ module ElasticSearch
     # Returns a hash, the parsed response body from elasticsearch
     def remove_alias(alias_name)
       post do |req|
-        req.url "#{@name}/_aliases"
+        req.url "/_aliases"
         req.body = { :actions => [{ :remove => { :index => @name, :alias => alias_name }}]}
       end
     end
