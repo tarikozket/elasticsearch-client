@@ -210,9 +210,8 @@ module ElasticSearch
     #
     # Returns a hash, the parsed response body from elasticsearch
     def get_aliases
-      put do |req|
+      get do |req|
         req.url "#{@name}/_aliases"
-        req.body = aliases
       end
     end
 
@@ -221,10 +220,10 @@ module ElasticSearch
     #   alias    - the alias we're adding
     #
     # Returns a hash, the parsed response body from elasticsearch
-    def remove_alias(type, alias_name)
+    def add_alias(alias_name)
       post do |req|
-        req.url "#{@name}/_aliases"
-        req.body = { :actions => [{ :add => { :index => type, :alias => aliase_name }}]}
+        req.url "/_aliases"
+        req.body = { :actions => [{ :add => { :index => @name, :alias => alias_name }}]}
       end
     end
 
@@ -233,10 +232,10 @@ module ElasticSearch
     #   alias    - the alias we're removing
     #
     # Returns a hash, the parsed response body from elasticsearch
-    def remove_alias(type, alias_name)
+    def remove_alias(alias_name)
       post do |req|
         req.url "#{@name}/_aliases"
-        req.body = { :actions => [{ :remove => { :index => type, :alias => aliase_name }}]}
+        req.body = { :actions => [{ :remove => { :index => @name, :alias => alias_name }}]}
       end
     end
 
