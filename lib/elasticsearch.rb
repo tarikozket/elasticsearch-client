@@ -224,7 +224,7 @@ module ElasticSearch
     def remove_alias(type, alias_name)
       post do |req|
         req.url "#{@name}/_aliases"
-        req.body = { :actions => [{ :add => { :index => type, :alias => aliase_name }]}
+        req.body = { :actions => [{ :add => { :index => type, :alias => aliase_name }}]}
       end
     end
 
@@ -236,7 +236,7 @@ module ElasticSearch
     def remove_alias(type, alias_name)
       post do |req|
         req.url "#{@name}/_aliases"
-        req.body = { :actions => [{ :remove => { :index => type, :alias => aliase_name }]}
+        req.body = { :actions => [{ :remove => { :index => type, :alias => aliase_name }}]}
       end
     end
 
