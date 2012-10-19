@@ -211,7 +211,7 @@ module ElasticSearch
     # Returns a hash, the parsed response body from elasticsearch
     def get_aliases
       get do |req|
-        req.url "#{@name}/_aliases"
+        req.url "/_aliases"
       end
     end
 
