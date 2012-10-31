@@ -67,7 +67,8 @@ module ElasticSearch
 
     def bulk(data)
       return if data.empty?
-      body = post "/#{@name}/_bulk", data
+      puts "ES Index: #{@name}"
+      body = post "/_bulk", data
       raise Error, "bulk import got HTTP #{@last_resp.status} response" if @last_resp.status != 200
     end
 
