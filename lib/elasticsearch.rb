@@ -255,5 +255,13 @@ module ElasticSearch
 
       new(name, server)
     end
+
+    # Delete an index in elasticsearch
+    def remove_index
+      delete do |req|
+        req.url "#{@name}"
+      end
+      freeze
+    end
   end
 end
