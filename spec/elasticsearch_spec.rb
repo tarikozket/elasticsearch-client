@@ -1,63 +1,29 @@
-require 'spec_helper'
-require 'elasticsearch'
+require_relative 'spec_helper'
 
-describe ElasticSearch::JSONResponse do
-  describe "#parse" do
-    subject { ElasticSearch::JSONResponse.new }
+describe 'elasticsearch client' do
+  let(:servers) { ['http://127.0.0.1:9200'] }
 
-    it "parses json" do
-      subject.parse('{"good":"bad"}').should == {"good" => "bad"}
-    end
-  end
-end
-
-describe ElasticSearch::Error do
-  subject { ElasticSearch::Error.new }
-
-  it "subclasses StandardError" do
-    subject.methods.should include(:backtrace)
-    subject.methods.should include(:exception)
-    subject.methods.should include(:message)
-    subject.methods.should include(:set_backtrace)
-  end
-end
-
-describe ElasticSearch do
-  let(:server) { '127.0.0.1' }
-
-  describe ".get_connection" do
-    let(:subject) { ElasticSearch.get_connection(server) }
-
-    it "returns immediately without server" do
-      Faraday.should_not_receive(:new)
-      ElasticSearch.get_connection(nil)
-    end
-
-    it "creates faraday instance with server" do
-      Faraday.should_receive(:new).with(:url => server)
-      subject
-    end
-
-    it "returns faraday instance" do
-      subject.should be_instance_of(Faraday::Connection)
-    end
+  subject do
+    ElasticSearch::Client.new(:servers => servers)
   end
 
-  describe ".available?" do
-    context "connection up" do
-      it "returns true" do
-        conn = stub(:get => stub(:status => 200))
-        ElasticSearch.stub(:get_connection => conn)
-        ElasticSearch.available?.should be_true
-      end
-    end
+  it 'is available' do
+    subject.available?.must_equal true
+  end
 
-    context "connection down" do
-      it "returns false" do
-        conn = stub(:get => stub(:status => 500))
-        ElasticSearch.stub(:get_connection => conn)
-        ElasticSearch.available?.should be_false
-      end
-    end
+  it 'should be due for refresh after init' do
+    subject.should_refresh?.must_equal true
+  end
+
+  it 'defaults to seed servers when fetching' do
+    subject.fetch_servers.must_equal servers
+  end
+
+  it 'fetches custom server list' do
+    custom_servers = ['http://localhost:9200']
+    subject.fetch_servers = Proc.new { custom_servers }
+
+    subject.refresh_servers
+    subject.servers.must_equal custom_servers
   end
 end

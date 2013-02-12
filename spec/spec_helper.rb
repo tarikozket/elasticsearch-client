@@ -1,2 +1,3 @@
-require 'bundler'
-Bundler.require :default, :test
+require 'elasticsearch'
+require 'minitest/pride'
+require 'minitest/autorun'

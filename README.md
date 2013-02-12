@@ -8,55 +8,56 @@ Add to Gemfile
 
     gem 'elasticsearch-client', :require => 'elasticsearch'
 
-Create connection:
+Create client:
+
+    client = ElasticSearch::Client.new
+
+Create index:
 
     index = 'twitter'
-    url = 'http://localhost:9200'
-    es = ElasticSearch::Index.new(index, url)
+    client.create_index(index)
 
 Index a document:
 
     type = 'tweet'
     doc = {:id => 'abcd', :foo => 'bar'}
-    es.add(type, doc[:id], doc)
+    client.add(index, type, doc[:id], doc)
 
 Get a document:
 
     id = '1234'
-    es.mget(type, [id])
+    client.mget(index, type, [id])
 
 Get documents:
 
     id2 = 'abcd'
-    es.mget(type, [id, id2])
+    client.mget(index, type, [id, id2])
 
 Search:
 
     query = {
       :query => {
-        :bool => {
-          :must => {
-            :query_string => {
-              :default_field => '_all',
-              :query => 'foobar!',
-            }
-          }
-        }
+        :match_all => {}
       }
     }
-    es.search(type, query)
+    client.search(index, type, query)
 
 Remove record:
 
-    es.remove(type, id)
+    client.remove(index, type, id)
 
 Remove by query:
 
-    es.remove_by_query(type, :term => {:foo => 'bar'})
+    client.remove_by_query(index, type, :term => {:foo => 'bar'})
 
 Remove all of type:
 
-    es.remove_all(type)
+    client.remove_all(index, type)
+
+Create client using multiple servers:
+
+    servers = ['http://127.0.0.1:9200', 'http://127.0.0.1:10200']
+    client = ElasticSearch::Client.new(:servers => servers)
 
 ## Note on Patches/Pull Requests
 
