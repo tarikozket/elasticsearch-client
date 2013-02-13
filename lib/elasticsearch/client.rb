@@ -43,7 +43,7 @@ module ElasticSearch
     end
 
     def refresh_servers
-      @seed_servers = fetch_servers.shuffle
+      @seed_servers = fetch_servers
       @servers = @seed_servers.clone
       @current_server = @servers.first
       @refreshed_at = Time.now
