@@ -26,6 +26,9 @@ module ElasticSearch
           begin
             refresh_servers if should_refresh?
             response = connection.#{method}(*args, &block)
+            raise ResponseError, "elasticsearch server is offline or not accepting requests" if response.status == 0
+            raise ResponseError, response.body['error'] if response.body['error']
+            response
           rescue Exception => e
             case e
             when Faraday::Error::ConnectionFailed
