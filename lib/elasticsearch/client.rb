@@ -26,7 +26,10 @@ module ElasticSearch
           begin
             refresh_servers if should_refresh?
             response = connection.#{method}(*args, &block)
-            raise ResponseError, "elasticsearch server is offline or not accepting requests" if response.status == 0
+            if response.status == 0
+              drop_current_server!
+              raise ResponseError, "elasticsearch server is offline or not accepting requests"
+            end
             raise ResponseError, response.body['error'] if response.body['error']
             response
           rescue Exception => e
