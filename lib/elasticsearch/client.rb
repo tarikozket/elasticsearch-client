@@ -26,23 +26,12 @@ module ElasticSearch
           begin
             refresh_servers if should_refresh?
             response = connection.#{method}(*args, &block)
-            if response.status == 0
-              drop_current_server!
-              raise ResponseError, "elasticsearch server is offline or not accepting requests"
-            end
-            raise ResponseError, response.body['error'] if response.body['error']
+            raise ConnectionFailed, "elasticsearch server is offline or not accepting requests" if response.status == 0
+            raise ResponseError, response.body if response.body['error']
             response
-          rescue Exception => e
-            case e
-            when Faraday::Error::ConnectionFailed
-              drop_current_server!
-              raise ConnectionFailed, $!
-            when Faraday::Error::TimeoutError
-              drop_current_server!
-              raise TimeoutError, $!
-            else
-              raise e
-            end
+          rescue Faraday::Error::ConnectionFailed, Faraday::Error::TimeoutError, ConnectionFailed => e
+            drop_current_server!
+            raise ConnectionFailed, $!
           end
         end
       EOC
