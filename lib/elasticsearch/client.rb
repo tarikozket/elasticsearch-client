@@ -47,7 +47,8 @@ module ElasticSearch
 
     def fetch_servers
       if @fetch_servers
-        @fetch_servers.call
+        servers = @fetch_servers.call
+        servers.length > 0 ? servers : @seed_servers
       else
         @seed_servers
       end
