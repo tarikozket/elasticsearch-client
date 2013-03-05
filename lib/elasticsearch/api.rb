@@ -41,6 +41,7 @@ module ElasticSearch
       return if data.empty?
       resp = post "/_bulk", data
       raise ResponseError, "bulk import got HTTP #{resp.status} response" if resp.status != 200
+      resp.body
     end
 
     # Grab a bunch of items from an index
