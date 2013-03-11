@@ -54,6 +54,21 @@ Remove all of type:
 
     client.remove_all(index, type)
 
+Create alias:
+
+    client.add_alias(index, alias_name)
+
+Remove alias:
+
+    client.remove_alias(index, alias_name)
+
+Post alias actions:
+
+    client.post_aliases([
+      {:remove => {:index => index, :alias => old_alias_name}},
+      {:add => {:index => index, :alias => new_alias_name}}
+    ])
+
 Create client using multiple servers:
 
     servers = ['http://127.0.0.1:9200', 'http://127.0.0.1:10200']
