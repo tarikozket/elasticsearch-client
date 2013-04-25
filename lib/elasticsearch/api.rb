@@ -32,8 +32,8 @@ module ElasticSearch
     #   index - the name of the index
     #
     # Returns a hash, the parsed response body from elasticsearch
-    def refresh(index)
-      resp = post "/#{index}/_refresh"
+    def refresh(indexes)
+      resp = post "/#{Array(indexes).join(',')}/_refresh"
       resp.body
     end
 
