@@ -1,5 +1,4 @@
 require 'elasticsearch/api'
-require 'elasticsearch/timeout_middleware'
 
 module ElasticSearch
   class Client
@@ -32,7 +31,7 @@ module ElasticSearch
             raise ConnectionFailed, "elasticsearch server is offline or not accepting requests" if response.status == 0
             raise ResponseError, response.body if response.body['error']
             response
-          rescue Faraday::Error::ConnectionFailed, Timeout::Error, ConnectionFailed => e
+          rescue Faraday::Error::ConnectionFailed, Faraday::Error::TimeoutError, ConnectionFailed => e
             drop_current_server!
             raise ConnectionFailed, $!
           end
@@ -67,9 +66,8 @@ module ElasticSearch
     end
 
     def connection
-      @connection ||= Faraday.new(url:current_server) do |builder|
+      @connection ||= Faraday.new(url: current_server, request: {timeout: @timeout}) do |builder|
         builder.request  :json
-        builder.request  :timeout, @timeout
         builder.response :json, :content_type => /\bjson$/
         builder.adapter :excon
       end
