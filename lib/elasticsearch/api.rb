@@ -23,6 +23,26 @@ module ElasticSearch
       resp.body
     end
 
+    # Close an index in elasticsearch
+    #
+    #   index - the name of the index
+    def close_index(index)
+      resp = post do |req|
+        req.url "#{index}/_close"
+      end
+      resp.body
+    end
+
+    # Open an index in elasticsearch
+    #
+    #   index - the name of the index
+    def open_index(index)
+      resp = post do |req|
+        req.url "#{index}/_open"
+      end
+      resp.body
+    end
+
     # Force a refresh of an index
     #
     # This basically tells elasticsearch to flush its buffers
