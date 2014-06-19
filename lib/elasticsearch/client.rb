@@ -22,7 +22,7 @@ module ElasticSearch
       }
     end
 
-    %w(get post put delete).each do |method|
+    %w(head get post put delete).each do |method|
       class_eval <<-EOC, __FILE__, __LINE__ + 1
         def #{method}(*args, &block)
           begin

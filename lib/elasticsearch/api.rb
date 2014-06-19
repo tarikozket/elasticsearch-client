@@ -57,6 +57,11 @@ module ElasticSearch
       resp.body
     end
 
+    def indices_exists?(indices)
+      resp = head "/#{Array(indices).join(',')}"
+      resp.status == 200
+    end
+
     def bulk(data)
       return if data.empty?
       resp = post "/_bulk", data
