@@ -62,9 +62,10 @@ module ElasticSearch
       resp.status == 200
     end
 
-    def bulk(data)
+    def bulk(data, query_params={})
       return if data.empty?
-      resp = post "/_bulk", data
+      url = Faraday.build_url("_bulk", query_params).request_uri
+      resp = post url, data
       raise ResponseError, "bulk import got HTTP #{resp.status} response" if resp.status != 200
       resp.body
     end

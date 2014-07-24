@@ -1,3 +1,3 @@
 module ElasticSearch
-  VERSION = "0.1.1.ksr3"
+  VERSION = "0.1.1.ksr4"
 end
