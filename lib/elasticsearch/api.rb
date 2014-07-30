@@ -276,7 +276,7 @@ module ElasticSearch
     # Returns a hash, the parsed response body from elasticsearch
     def analyze(data, options = {})
       resp = get do |req|
-        req.url = "/_analyze", options
+        req.url "/_analyze", options
         req.body = data
       end
       resp.body
