@@ -268,6 +268,20 @@ module ElasticSearch
       resp.body
     end
 
+    # Analyze a string
+    #
+    #   data - string to analyze
+    #   options - analyzer options such as {tokenizer: :standard}
+    #
+    # Returns a hash, the parsed response body from elasticsearch
+    def analyze(data, options = {})
+      resp = get do |req|
+        req.url = "/_analyze", options
+        req.body = data
+      end
+      resp.body
+    end
+
     # Is the cluster responding?
     #
     # Returns a boolean
