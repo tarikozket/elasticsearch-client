@@ -18,10 +18,12 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+
   s.add_dependency 'faraday', '~> 0.9'
   s.add_dependency 'faraday_middleware', '~> 0.9'
   s.add_dependency 'excon'
   s.add_dependency 'yajl-ruby', '~> 1.1.0'
 
   s.add_development_dependency 'rake'
+  s.add_development_dependency 'minitest'
 end
