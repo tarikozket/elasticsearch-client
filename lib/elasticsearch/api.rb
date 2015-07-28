@@ -294,9 +294,8 @@ module ElasticSearch
 
     # Initiates or continues a scrolling scan of the index.
     #
-    # On the initial call a cursor (`_scroll_id`) is acquired. On subsequent calls, pass
-    # in this cursor to get the next "page" of results. Note that the initial call returns
-    # no results, just a cursor - you only get pages back on subsequent calls.
+    # On the initial call a cursor (`_scroll_id`) is acquired, along with the first page of
+    # results. On subsequent calls, pass in this cursor to get the next "page" of results.
     #
     # Scans can be created with a "timeout", which is how long ElasticSearch will keep
     # the results of the scan around. Subsequent calls with a timeout refresh the timeout.
