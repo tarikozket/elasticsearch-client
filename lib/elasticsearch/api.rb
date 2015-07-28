@@ -314,7 +314,7 @@ module ElasticSearch
 
           req.body = options if options
         end
-        return scan(index, types, cursor: resp.body['_scroll_id'], timeout: timeout)
+        return scroll(index, types, cursor: resp.body['_scroll_id'], timeout: timeout)
       end
 
       resp = get do |req|
