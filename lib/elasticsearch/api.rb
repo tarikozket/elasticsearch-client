@@ -291,5 +291,39 @@ module ElasticSearch
       end
       resp.status == 200
     end
+
+    # Initiates or continues a scrolling scan of the index.
+    #
+    # On the initial call a cursor (`_scroll_id`) is acquired. On subsequent calls, pass
+    # in this cursor to get the next "page" of results. Note that the initial call returns
+    # no results, just a cursor - you only get pages back on subsequent calls.
+    #
+    # Scans can be created with a "timeout", which is how long ElasticSearch will keep
+    # the results of the scan around. Subsequent calls with a timeout refresh the timeout.
+    #
+    # You can also specify how many results are returned *per server*. For example, if you
+    # have 5 servers, and specify 10 results, each page will return 50 results.
+    def scroll(index, types, options: nil, cursor: nil, timeout: '1m', results_per_server: 1000)
+      if !cursor
+        resp = get do |req|
+          req.url "#{index}/#{types}/_search", {
+            scroll: timeout,
+            search_type: :scan,
+            size: results_per_server
+          }
+
+          req.body = options if options
+        end
+        return scan(index, types, cursor: resp.body['_scroll_id'], timeout: timeout)
+      end
+
+      resp = get do |req|
+        req.url '_search/scroll', {
+          scroll: timeout,
+          scroll_id: cursor
+        }
+      end
+      resp.body
+    end
   end
 end
